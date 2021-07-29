@@ -34,8 +34,8 @@ public class SmartPhoneController {
         return new ResponseEntity<>(smartPhoneService.findAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<SmartPhone> deleteSmartphone(@RequestBody Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SmartPhone> deleteSmartphone(@PathVariable Long id) {
         Optional<SmartPhone> smartphoneOptional = smartPhoneService.findById(id);
         if (!smartphoneOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -44,4 +44,22 @@ public class SmartPhoneController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<SmartPhone> updateSmartPhone(@PathVariable Long id, @RequestBody SmartPhone smartPhone) {
+        Optional<SmartPhone> smartPhoneOptional = smartPhoneService.findById(id);
+        if (!smartPhoneOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        smartPhone.setId(id);
+        return new ResponseEntity<>(smartPhoneService.save(smartPhone), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SmartPhone> findOne(@PathVariable Long id) {
+        Optional<SmartPhone> smartPhone = smartPhoneService.findById(id);
+        if (!smartPhone.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(smartPhone.get(), HttpStatus.OK);
+    }
 }
