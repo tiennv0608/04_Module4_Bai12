@@ -37,7 +37,7 @@
 
         function getSmartPhone(smartPhone) {
             return `<tr><td>${smartPhone.producer}</td><td>${smartPhone.model}</td><td>${smartPhone.price}</td>` +
-                `<td><a class="deleteSmartPhone" href="${smartPhone.id}">Delete</a></td></tr>`;
+                `<td><a onclick="deleteSmartphone('${smartPhone.id}')">Delete</a></td></tr>`;
         }
 
         function successHandler() {
@@ -62,46 +62,61 @@
             });
         }
 
-        $(document).ready(function () {
-            //sư kiện nào thực hiện Ajax
-            $('.deleteSmartphone').click(function (event) {
-                //lay du lieu
-                let a = $(this);
-                let smartphoneId = a.attr("href");
-                // goi ajax
-                $.ajax({
-                    type: "DELETE",
-                    //tên API
-                    url: `/smartphones/${smartphoneId}`,
-                    //xử lý khi thành công
-                    success: function (data) {
-                        a.parent().parent().remove();
-                    }
-
-                });
-                //chặn sự kiện mặc định của thẻ
-                event.preventDefault();
+        function deleteSmartphone(id){
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "DELETE",
+                //tên API
+                url: "/smartphones",
+                data: JSON.stringify(id),
+                //xử lý khi thành công
+                success: successHandler
             });
-        })
+        }
+
+        // $(document).ready(function () {
+        //     //sư kiện nào thực hiện Ajax
+        //     $('.deleteSmartphone').click(function (event) {
+        //         //lay du lieu
+        //         let a = $(this);
+        //         let smartphoneId = a.attr("href");
+        //         // goi ajax
+        //         $.ajax({
+        //             type: "DELETE",
+        //             //tên API
+        //             url: `/smartphones/${smartphoneId}`,
+        //             //xử lý khi thành công
+        //             success: function (data) {
+        //                 a.parent().parent().remove();
+        //             }
+        //
+        //         });
+        //         //chặn sự kiện mặc định của thẻ
+        //         event.preventDefault();
+        //     });
+        // })
     </script>
 </head>
-<body>
+<body onload="successHandler()">
 <h1>Smartphone List</h1>
 <table id="smartphoneList">
-    <tr>
-        <td>Producer</td>
-        <td>Model</td>
-        <td>Price</td>
-        <td>Delete</td>
-    </tr>
-    <th:block th:each="smartphone: ${smartphones}">
-        <tr>
-            <td th:text="${smartphone.producer}"></td>
-            <td th:text="${smartphone.model}"></td>
-            <td th:text="${smartphone.price}"></td>
-            <td><a class="deleteSmartphone" th:href="${smartphone.getId()}">Delete</a></td>
-        </tr>
-    </th:block>
+<!--    <tr>-->
+<!--        <td>Producer</td>-->
+<!--        <td>Model</td>-->
+<!--        <td>Price</td>-->
+<!--        <td>Delete</td>-->
+<!--    </tr>-->
+<!--    <th:block th:each="smartphone: ${smartphones}">-->
+<!--        <tr>-->
+<!--            <td th:text="${smartphone.producer}"></td>-->
+<!--            <td th:text="${smartphone.model}"></td>-->
+<!--            <td th:text="${smartphone.price}"></td>-->
+<!--            <td><a class="deleteSmartphone" th:href="${smartphone.getId()}">Delete</a></td>-->
+<!--        </tr>-->
+<!--    </th:block>-->
 </table>
 <hr>
 <form id="add-smartphone">

@@ -34,14 +34,14 @@ public class SmartPhoneController {
         return new ResponseEntity<>(smartPhoneService.findAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<SmartPhone> deleteSmartphone(@PathVariable Long id) {
+    @DeleteMapping
+    public ResponseEntity<SmartPhone> deleteSmartphone(@RequestBody Long id) {
         Optional<SmartPhone> smartphoneOptional = smartPhoneService.findById(id);
         if (!smartphoneOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         smartPhoneService.remove(id);
-        return new ResponseEntity<>(smartphoneOptional.get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
